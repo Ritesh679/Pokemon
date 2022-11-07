@@ -5,24 +5,16 @@ const Pagination = ({
 	pagination: Function;
 	offset: number;
 }) => {
-	// console.log(offset);
-	const pageNumbers = [];
-	const handleButtonClick = (event: any) => {
-		pagination(event.target.value);
+	const handleButtonClick = (value: string) => {
+		pagination(value);
 	};
 	return (
 		<div className="flex justify-between p-[10px]">
-			<button
-				onClick={() => handleButtonClick(event)}
-				disabled={offset === 0}
-				value="prev"
-			>
+			<button onClick={() => handleButtonClick("prev")} disabled={offset === 0}>
 				{offset === 0 ? "" : "Prev"}
 			</button>
 
-			<button onClick={() => handleButtonClick(event)} value="next">
-				Next
-			</button>
+			<button onClick={() => handleButtonClick("next")}>Next</button>
 		</div>
 	);
 };
