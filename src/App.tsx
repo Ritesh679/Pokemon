@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 import "./App.css";
-import Card from "./Components/Card";
-import Pagination from "./Components/Pagination";
-import Sidebar from "./Components/Sidebar";
-
-export interface PokemonData {
-	id: number;
-	height: number;
-	sprites: { front_default: string };
-	name: string;
-	stats: Array<{ base_stat: number; stat: { name: string } }>;
-	types: Array<{ type: { name: string } }>;
-	moves: Array<{ move: { name: string; url: URL } }>;
-}
+import FightSection from "./Pages/FightSection";
+import MainPage from "./Pages/MainPage";
+import { POKEMON } from "./assets/interfaces";
 
 function App() {
 	const [offset, setOffset] = useState(0);
-	const [pokemonData, setPokemonData] = useState<PokemonData[]>([]);
-	const [allPokemons, setAllPokemons] = useState<PokemonData[]>([]);
+	const [pokemonData, setPokemonData] = useState<POKEMON[]>([]);
+	const [allPokemons, setAllPokemons] = useState<POKEMON[]>([]);
 	const [searchValue, setSearchValue] = useState("");
 	const [checkboxTypes, setCheckboxTypes] = useState<string[]>([]);
 	const [limit, setLimit] = useState(20);
@@ -63,6 +55,11 @@ function App() {
 		// setLimit(1148);
 		setSearchValue(value);
 	}
+	function checkboxHandler(name: string, checked: Boolean) {
+		checked && setCheckboxTypes([...checkboxTypes, name]);
+		!checked &&
+			setCheckboxTypes(checkboxTypes.filter((types) => types !== name));
+	}
 	useEffect(() => {
 		let filteredData = [];
 		for (let pokemon of allPokemons) {
@@ -79,29 +76,32 @@ function App() {
 		}
 		setPokemonData(filteredData);
 	}, [allPokemons, checkboxTypes, searchValue]);
-	function checkboxHandler(name: string, checked: Boolean) {
-		checked && setCheckboxTypes([...checkboxTypes, name]);
-		!checked &&
-			setCheckboxTypes(checkboxTypes.filter((types) => types !== name));
-	}
 	useEffect(() => {
 		fetchData(offset, limit);
 	}, [offset, limit]);
 	return (
-		<div className="bg-gray-600">
-			<div className="flex flex-row">
-				<Sidebar
-					handleSearch={handleSearch}
-					allPokemons={allPokemons}
-					checkboxHandler={checkboxHandler}
-				/>
-				<div className="grid grid-cols-2 md:grid-cols-3">
-					{pokemonData.slice(0, 21).map((pokemon: any) => (
-						<Card pokemon={pokemon} key={pokemon.id} />
-					))}
-				</div>
-			</div>
-			<Pagination pagination={pagination} offset={offset}></Pagination>
+		<div className=" bg-gray-600">
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<MainPage
+								handleSearch={handleSearch}
+								allPokemons={allPokemons}
+								checkboxHandler={checkboxHandler}
+								pokemonData={pokemonData}
+								pagination={pagination}
+								offset={offset}
+							/>
+						}
+					/>
+					<Route
+						path="/fight"
+						element={<FightSection pokemonData={pokemonData} />}
+					/>
+				</Routes>
+			</BrowserRouter>
 		</div>
 	);
 }

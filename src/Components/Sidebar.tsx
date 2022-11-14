@@ -1,3 +1,5 @@
+import React from "react";
+import { Link } from "react-router-dom";
 const Sidebar = ({
 	handleSearch,
 	checkboxHandler,
@@ -45,6 +47,9 @@ const Sidebar = ({
 						);
 					})}
 			</div>
+			<Link to="/fight">
+				<h2 className="mt-[50px] text-left text-white">Fight Section </h2>
+			</Link>
 		</div>
 	);
 };

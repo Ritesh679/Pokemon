@@ -1,8 +1,8 @@
-import Move from "./Move";
+import Move from "../Components/Move";
 import { POKEMON } from "../assets/interfaces";
+import { useEffect } from "react";
 
-const Card = ({ pokemon }: { pokemon: POKEMON }) => {
-	console.log(pokemon);
+const FightCard = ({ pokemon, HP }: { pokemon: POKEMON; HP: number }) => {
 	return (
 		<div className="">
 			<div className="flex m-[10px]">
@@ -30,7 +30,7 @@ const Card = ({ pokemon }: { pokemon: POKEMON }) => {
 									return (
 										<div className="flex" key={i}>
 											<b>{stat.stat.name} : </b>
-											<p>{stat.base_stat}</p>
+											<p>{stat.stat.name === "hp" ? HP : stat.base_stat}</p>
 										</div>
 									);
 								}
@@ -85,4 +85,4 @@ const Card = ({ pokemon }: { pokemon: POKEMON }) => {
 	);
 };
 
-export default Card;
+export default FightCard;
