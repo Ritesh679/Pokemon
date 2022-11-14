@@ -17,8 +17,6 @@ const FightSection = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 
 	let defence1 = firstPokemon && firstPokemon[0].stats[2].base_stat;
 	let defence2 = secondPokemon && secondPokemon[0].stats[2].base_stat;
-	// const [firstPokemonDefence,setFirstPokemonDefence] = useState(defence1)
-	// const [secondPokemonDefence,setSecondPokemonDefence] = useState(defence2)
 
 	const handleFirstPokemon = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		setMessage([]);
@@ -81,19 +79,21 @@ const FightSection = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 					pokemon2HP =
 						tempDefence2 < 0
 							? pokemon2HP - currentPower1
-							: tempDefence2 - currentPower1 <= 0
+							: tempDefence2 - currentPower1 < 0
 							? pokemon2HP - Math.abs(tempDefence2 - currentPower1)
 							: pokemon2HP;
-					while (tempDefence2 > 0) {
-						tempDefence2 = currentPower1 && tempDefence2 - currentPower1;
-						setMessage((mess) => [
-							`${secondPokemon[0].name}'s defence is ${tempDefence2}`,
-							...mess,
-						]);
-					}
+					tempDefence2 = tempDefence2 - currentPower1;
 					setMessage((mess) => [
 						...mess,
-						`${secondPokemon[0].name} HP is now ${pokemon2HP} `,
+						`${secondPokemon[0].name}'s defence is ${
+							tempDefence2 && tempDefence2 < 0 ? 0 : tempDefence2
+						}`,
+					]);
+					setMessage((mess) => [
+						...mess,
+						`${secondPokemon[0].name} HP is now ${
+							pokemon2HP && pokemon2HP < 0 ? 0 : pokemon2HP
+						} `,
 					]);
 					if (pokemon2HP <= 0) {
 						setMessage((mess) => [...mess, `${firstPokemon[0].name} won`]);
@@ -109,11 +109,10 @@ const FightSection = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 					pokemon1HP =
 						tempDefence2 < 0
 							? pokemon1HP - currentPower2
-							: tempDefence1 - currentPower2 <= 0
-							? pokemon1HP - Math.abs(tempDefence2 - currentPower2)
+							: tempDefence1 - currentPower2 < 0
+							? pokemon1HP - Math.abs(tempDefence1 - currentPower2)
 							: pokemon1HP;
-					tempDefence1 =
-						currentPower2 && tempDefence1 > 0 ? defence1 - currentPower2 : 0;
+					tempDefence1 = tempDefence1 - currentPower2;
 					secondPokemon &&
 						setMessage((mess) => [
 							...mess,
@@ -121,11 +120,15 @@ const FightSection = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 						]);
 					setMessage((mess) => [
 						...mess,
-						`${firstPokemon[0].name}'s defence is ${tempDefence1}`,
+						`${firstPokemon[0].name}'s defence is ${
+							tempDefence1 && tempDefence1 < 0 ? 0 : tempDefence1
+						}`,
 					]);
 					setMessage((mess) => [
 						...mess,
-						`${firstPokemon[0].name} HP is now ${pokemon1HP} `,
+						`${firstPokemon[0].name} HP is now ${
+							pokemon1HP && pokemon1HP < 0 ? 0 : pokemon1HP
+						} `,
 					]);
 					if (pokemon1HP <= 0) {
 						setMessage((mess) => [...mess, `${secondPokemon[0].name} won`]);
@@ -151,8 +154,12 @@ const FightSection = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 					<option disabled selected>
 						Select a Pokemon
 					</option>
-					{pokemonData.map((data) => {
-						return <option value={data.name}>{data.name}</option>;
+					{pokemonData.map((data, i) => {
+						return (
+							<option key={i} value={data.name}>
+								{data.name}
+							</option>
+						);
 					})}
 				</select>
 				{/**Selecting second Pokemon for fight */}
@@ -165,8 +172,12 @@ const FightSection = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 							Select a Pokemon
 						</option>
 						{pokemonData &&
-							pokemonData.map((data) => {
-								return <option value={data.name}>{data.name}</option>;
+							pokemonData.map((data, i) => {
+								return (
+									<option key={i} value={data.name}>
+										{data.name}
+									</option>
+								);
 							})}
 					</select>
 				}
@@ -208,7 +219,12 @@ const FightSection = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 				</div>
 			)}
 
-			{message.length > 0 && message.map((m, i) => <li key={i}>{m}</li>)}
+			{message.length > 0 &&
+				message.map((m, i) => (
+					<li className="text-white list-none" key={i}>
+						<button className="p-3">{m}</button>
+					</li>
+				))}
 		</div>
 	);
 };
