@@ -2,7 +2,6 @@ import Move from "./Move";
 import { POKEMON } from "../assets/interfaces";
 
 const Card = ({ pokemon }: { pokemon: POKEMON }) => {
-	console.log(pokemon);
 	return (
 		<div className="">
 			<div className="flex m-[10px]">

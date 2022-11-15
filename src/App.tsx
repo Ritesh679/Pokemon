@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
-import FightSection from "./Pages/FightSection";
 import MainPage from "./Pages/MainPage";
 import { POKEMON } from "./assets/interfaces";
+import FighterSelect from "./fightUtils/fighterSelect";
 
 function App() {
 	const [offset, setOffset] = useState(0);
@@ -98,7 +98,7 @@ function App() {
 					/>
 					<Route
 						path="/fight"
-						element={<FightSection pokemonData={pokemonData} />}
+						element={<FighterSelect pokemonData={pokemonData} />}
 					/>
 				</Routes>
 			</BrowserRouter>
