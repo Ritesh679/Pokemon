@@ -23,7 +23,7 @@ const FighterSelect = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 		fetchData();
 	}, []);
 	return (
-		<div className="h-[auto] bg-gray-600">
+		<div className="h-[100vh] bg-gray-600 rounded-xl">
 			<div className="flex justify-evenly pt-[100px]">
 				{/**Selecting First Pokemon for fight**/}
 				<select
@@ -62,6 +62,9 @@ const FighterSelect = ({ pokemonData }: { pokemonData: POKEMON[] }) => {
 					</select>
 				}
 			</div>
+			{(!firstPokemon || !secondPokemon) && (
+				<h1>Please select both pokemons</h1>
+			)}
 			{firstPokemon && secondPokemon && (
 				<Fight firstPokemon={firstPokemon} secondPokemon={secondPokemon} />
 			)}

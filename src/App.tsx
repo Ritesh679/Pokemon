@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import MainPage from "./Pages/MainPage";
 import { POKEMON } from "./assets/interfaces";
-import FighterSelect from "./fightUtils/fighterSelect";
+import FighterSelect from "./fightUtils/FighterSelect";
 
 function App() {
 	const [offset, setOffset] = useState(0);

@@ -3,7 +3,6 @@ import { POKEMON } from "../assets/interfaces";
 import Card from "../Components/Card";
 import Pagination from "../Components/Pagination";
 import Sidebar from "../Components/Sidebar";
-import FighterSelect from "../fightUtils/fighterSelect";
 
 const MainPage = ({
 	handleSearch,
